@@ -1,0 +1,879 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Event Management System</title>
+
+    <!-- Bootstrap CSS - Local -->
+    <link rel="stylesheet" href="../framework/css/bootstrap.min.css" />
+
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+
+    <!-- Custom Styles -->
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f8f9fa;
+      }
+
+      .hero-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 80px 0;
+        margin-bottom: 60px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)" /></svg>');
+        opacity: 0.3;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 1;
+        animation: fadeInUp 1s ease-out;
+      }
+
+      .hero-section h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        letter-spacing: -1px;
+        animation: fadeInUp 1s ease-out 0.2s both;
+      }
+
+      .hero-section .lead {
+        font-size: 1.4rem;
+        font-weight: 300;
+        margin-bottom: 30px;
+        opacity: 0.95;
+        animation: fadeInUp 1s ease-out 0.4s both;
+      }
+
+      .hero-badge {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        padding: 8px 20px;
+        border-radius: 30px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        animation: fadeInUp 1s ease-out 0.1s both;
+      }
+
+      .hero-image-container {
+        position: relative;
+        animation: fadeInRight 1s ease-out 0.6s both;
+      }
+
+      .hero-image {
+        max-width: 100%;
+        height: auto;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        transition: transform 0.5s ease;
+        border: 3px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .hero-image:hover {
+        transform: scale(1.05) translateY(-10px);
+      }
+
+      .hero-image-container::before {
+        content: "";
+        position: absolute;
+        top: -20px;
+        right: -20px;
+        width: 100px;
+        height: 100px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        z-index: -1;
+      }
+
+      .hero-image-container::after {
+        content: "";
+        position: absolute;
+        bottom: -30px;
+        left: -30px;
+        width: 150px;
+        height: 150px;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 50%;
+        z-index: -1;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeInRight {
+        from {
+          opacity: 0;
+          transform: translateX(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      .feature-card {
+        background: white;
+        border-radius: 10px;
+        padding: 25px;
+        margin: 15px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+        height: calc(100% - 30px);
+      }
+
+      .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      .feature-icon {
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+        color: #667eea;
+      }
+
+      .feature-title {
+        font-size: 1.3rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #333;
+      }
+
+      .section-title {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 30px;
+        color: #333;
+        text-align: center;
+      }
+
+      .search-section {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+      }
+
+      .table-responsive {
+        margin-top: 20px;
+      }
+
+      .form-section {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+      }
+
+      .password-error {
+        color: #dc3545;
+        font-size: 0.875rem;
+        margin-top: 5px;
+      }
+
+      .password-match {
+        color: #28a745;
+        font-size: 0.875rem;
+        margin-top: 5px;
+      }
+
+      .summary-box {
+        background: #e7f3ff;
+        border-left: 4px solid #667eea;
+        padding: 15px;
+        margin-top: 20px;
+        border-radius: 5px;
+      }
+
+      .filter-label {
+        font-weight: 600;
+        margin-bottom: 5px;
+        display: block;
+      }
+
+      footer {
+        background: #343a40;
+        color: white;
+        text-align: center;
+        padding: 20px 0;
+        margin-top: 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <!-- Hero Section -->
+      <div class="hero-section">
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-lg-6">
+              <div class="hero-content">
+                <div class="hero-badge">
+                  <i class="bi bi-calendar-check me-2"></i>Trusted by 10,000+
+                  Users
+                </div>
+                <h1>Event Management System</h1>
+                <p class="lead">
+                  Discover, Register, and Manage Your Professional Events with
+                  Ease
+                </p>
+                <div class="d-flex gap-3 flex-wrap">
+                  <div class="text-white">
+                    <i class="bi bi-check-circle-fill me-2"></i>
+                    <span>500+ Events</span>
+                  </div>
+                  <div class="text-white">
+                    <i class="bi bi-check-circle-fill me-2"></i>
+                    <span>Expert Speakers</span>
+                  </div>
+                  <div class="text-white">
+                    <i class="bi bi-check-circle-fill me-2"></i>
+                    <span>Global Community</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 text-center mt-4 mt-lg-0">
+              <div class="hero-image-container">
+                <img
+                  src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&h=400&fit=crop"
+                  alt="Event Management"
+                  class="hero-image"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Why Choose Us Section -->
+      <div class="container mb-5">
+        <h2 class="section-title">Why Choose Us?</h2>
+        <div class="row">
+          <div
+            class="col-12 col-md-6 col-lg-4"
+            v-for="feature in features"
+            :key="feature.id"
+          >
+            <div class="feature-card">
+              <div class="feature-icon"><i :class="feature.icon"></i></div>
+              <h3 class="feature-title">{{ feature.title }}</h3>
+              <p>{{ feature.description }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Event Search Section -->
+      <div class="container">
+        <div class="search-section">
+          <h2 class="section-title">Browse Events</h2>
+
+          <!-- Search Filters -->
+          <div class="row mb-3">
+            <div class="col-md-4 mb-3">
+              <label for="searchId" class="filter-label"
+                >Search by Event ID</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="searchId"
+                v-model="searchId"
+                placeholder="e.g., EVT10001"
+              />
+            </div>
+            <div class="col-md-4 mb-3">
+              <label for="searchName" class="filter-label"
+                >Search by Event Name</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="searchName"
+                v-model="searchName"
+                placeholder="e.g., Tech Conference"
+              />
+            </div>
+            <div class="col-md-4 mb-3">
+              <label for="searchDuration" class="filter-label"
+                >Search by Duration (hours)</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="searchDuration"
+                v-model="searchDuration"
+                placeholder="e.g., 8"
+              />
+            </div>
+          </div>
+
+          <!-- Category Filter -->
+          <div class="mb-3">
+            <label class="filter-label">Filter by Category</label>
+            <div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="category"
+                  id="catAll"
+                  value="All"
+                  v-model="selectedCategory"
+                />
+                <label class="form-check-label" for="catAll">All</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="category"
+                  id="catTech"
+                  value="Technology"
+                  v-model="selectedCategory"
+                />
+                <label class="form-check-label" for="catTech">Technology</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="category"
+                  id="catBusiness"
+                  value="Business"
+                  v-model="selectedCategory"
+                />
+                <label class="form-check-label" for="catBusiness"
+                  >Business</label
+                >
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="category"
+                  id="catMarketing"
+                  value="Marketing"
+                  v-model="selectedCategory"
+                />
+                <label class="form-check-label" for="catMarketing"
+                  >Marketing</label
+                >
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="category"
+                  id="catFinance"
+                  value="Finance"
+                  v-model="selectedCategory"
+                />
+                <label class="form-check-label" for="catFinance">Finance</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Events Table -->
+          <div class="table-responsive">
+            <table class="table table-striped table-hover">
+              <thead class="table-dark">
+                <tr>
+                  <th>Event ID</th>
+                  <th>Event Name</th>
+                  <th>Category</th>
+                  <th>Duration (Hours)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="event in filteredEvents" :key="event.eventid">
+                  <td>{{ event.eventid }}</td>
+                  <td>{{ event.eventname }}</td>
+                  <td>{{ event.category }}</td>
+                  <td>{{ event.durationhour }}</td>
+                </tr>
+                <tr v-if="filteredEvents.length === 0">
+                  <td colspan="4" class="text-center text-muted">
+                    No events found
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Registration Form Section -->
+      <div class="container">
+        <div class="form-section">
+          <h2 class="section-title">Event Registration</h2>
+
+          <form @submit.prevent="handleSubmit">
+            <!-- Username -->
+            <div class="mb-3">
+              <label for="username" class="form-label">Username</label>
+              <input
+                type="text"
+                class="form-control"
+                id="username"
+                v-model="form.username"
+                required
+                placeholder="Enter your username"
+              />
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="password"
+                v-model="form.password"
+                required
+                placeholder="Enter your password"
+              />
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="mb-3">
+              <label for="confirmPassword" class="form-label"
+                >Confirm Password</label
+              >
+              <input
+                type="password"
+                class="form-control"
+                id="confirmPassword"
+                v-model="form.confirmPassword"
+                required
+                placeholder="Re-enter your password"
+              />
+              <div
+                v-if="form.confirmPassword && form.password !== form.confirmPassword"
+                class="password-error"
+              >
+                ⚠ Passwords do not match
+              </div>
+              <div
+                v-if="form.confirmPassword && form.password === form.confirmPassword"
+                class="password-match"
+              >
+                ✓ Passwords match
+              </div>
+            </div>
+
+            <!-- Event Category Selection -->
+            <div class="mb-3">
+              <label class="form-label">Select Event Category</label>
+              <div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="regCategory"
+                    id="regTech"
+                    value="Technology"
+                    v-model="form.category"
+                  />
+                  <label class="form-check-label" for="regTech"
+                    >Technology</label
+                  >
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="regCategory"
+                    id="regBusiness"
+                    value="Business"
+                    v-model="form.category"
+                  />
+                  <label class="form-check-label" for="regBusiness"
+                    >Business</label
+                  >
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="regCategory"
+                    id="regMarketing"
+                    value="Marketing"
+                    v-model="form.category"
+                  />
+                  <label class="form-check-label" for="regMarketing"
+                    >Marketing</label
+                  >
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="regCategory"
+                    id="regFinance"
+                    value="Finance"
+                    v-model="form.category"
+                  />
+                  <label class="form-check-label" for="regFinance"
+                    >Finance</label
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Event Name Dropdown -->
+            <div class="mb-3">
+              <label for="eventSelect" class="form-label">Select Event</label>
+              <select
+                class="form-select"
+                id="eventSelect"
+                v-model="form.selectedEvent"
+                required
+              >
+                <option value="">Choose an event...</option>
+                <option
+                  v-for="event in eventsByCategory"
+                  :key="event.eventid"
+                  :value="event.eventname"
+                >
+                  {{ event.eventname }}
+                </option>
+              </select>
+            </div>
+
+            <!-- Submit Button -->
+            <button
+              type="submit"
+              class="btn btn-primary btn-lg w-100"
+              :disabled="form.password !== form.confirmPassword || !form.password"
+            >
+              Register
+            </button>
+          </form>
+
+          <!-- Summary Display -->
+          <div v-if="showSummary" class="summary-box">
+            <h5><strong>Registration Summary</strong></h5>
+            <p><strong>Username:</strong> {{ form.username }}</p>
+            <p><strong>Selected Category:</strong> {{ form.category }}</p>
+            <p><strong>Selected Event:</strong> {{ form.selectedEvent }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <footer>
+        <div class="container">
+          <p>&copy; 2026 Event Management System. All rights reserved.</p>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Bootstrap JS - Local -->
+    <script src="../framework/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Vue.js 3 - Local -->
+    <script src="../framework/js/vue.global.js"></script>
+
+    <!-- Vue App -->
+    <script>
+      const { createApp } = Vue;
+
+      createApp({
+        data() {
+          return {
+            // Features for "Why Choose Us" section
+            features: [
+              {
+                id: 1,
+                icon: "bi bi-bullseye",
+                title: "Wide Event Selection",
+                description:
+                  "Access hundreds of professional events across multiple categories including Technology, Business, Marketing, and Finance.",
+              },
+              {
+                id: 2,
+                icon: "bi bi-lightning-charge-fill",
+                title: "Easy Registration",
+                description:
+                  "Simple and quick registration process. Get confirmed in minutes and start planning your event attendance.",
+              },
+              {
+                id: 3,
+                icon: "bi bi-shield-lock-fill",
+                title: "Secure Platform",
+                description:
+                  "Your data is protected with industry-standard security measures. Register with confidence.",
+              },
+              {
+                id: 4,
+                icon: "bi bi-calendar-event",
+                title: "Real-time Updates",
+                description:
+                  "Stay informed with instant notifications about event changes, new additions, and important announcements.",
+              },
+              {
+                id: 5,
+                icon: "bi bi-star-fill",
+                title: "Expert Speakers",
+                description:
+                  "Learn from industry leaders and subject matter experts who share cutting-edge insights and best practices.",
+              },
+              {
+                id: 6,
+                icon: "bi bi-people-fill",
+                title: "Networking Opportunities",
+                description:
+                  "Connect with like-minded professionals, expand your network, and build valuable business relationships.",
+              },
+            ],
+
+            // Events data from events.txt
+            events: [
+              {
+                eventid: "EVT10001",
+                eventname: "Tech Innovations Conference",
+                category: "Technology",
+                durationhour: 8,
+              },
+              {
+                eventid: "EVT10002",
+                eventname: "Startup Pitch Day",
+                category: "Business",
+                durationhour: 6,
+              },
+              {
+                eventid: "EVT10003",
+                eventname: "AI & Machine Learning Summit",
+                category: "Technology",
+                durationhour: 10,
+              },
+              {
+                eventid: "EVT10004",
+                eventname: "Cybersecurity Workshop",
+                category: "Technology",
+                durationhour: 4,
+              },
+              {
+                eventid: "EVT10005",
+                eventname: "Digital Marketing Bootcamp",
+                category: "Marketing",
+                durationhour: 6,
+              },
+              {
+                eventid: "EVT10006",
+                eventname: "Blockchain and Cryptocurrency",
+                category: "Finance",
+                durationhour: 5,
+              },
+              {
+                eventid: "EVT10007",
+                eventname: "Entrepreneurship Forum",
+                category: "Business",
+                durationhour: 7,
+              },
+              {
+                eventid: "EVT10008",
+                eventname: "Data Science Hackathon",
+                category: "Technology",
+                durationhour: 12,
+              },
+              {
+                eventid: "EVT10009",
+                eventname: "Leadership and Management Summit",
+                category: "Business",
+                durationhour: 9,
+              },
+              {
+                eventid: "EVT10010",
+                eventname: "E-commerce Strategies",
+                category: "Marketing",
+                durationhour: 6,
+              },
+              {
+                eventid: "EVT10011",
+                eventname: "AI for Business",
+                category: "Business",
+                durationhour: 8,
+              },
+              {
+                eventid: "EVT10012",
+                eventname: "IoT & Smart Devices Expo",
+                category: "Technology",
+                durationhour: 7,
+              },
+              {
+                eventid: "EVT10013",
+                eventname: "Brand Strategy and Growth",
+                category: "Marketing",
+                durationhour: 5,
+              },
+              {
+                eventid: "EVT10014",
+                eventname: "Investment and Wealth Management",
+                category: "Finance",
+                durationhour: 6,
+              },
+              {
+                eventid: "EVT10015",
+                eventname: "Financial Technology (FinTech) Summit",
+                category: "Finance",
+                durationhour: 8,
+              },
+              {
+                eventid: "EVT10016",
+                eventname: "AI Ethics and Regulations",
+                category: "Technology",
+                durationhour: 4,
+              },
+              {
+                eventid: "EVT10017",
+                eventname: "Business Analytics Workshop",
+                category: "Business",
+                durationhour: 6,
+              },
+              {
+                eventid: "EVT10018",
+                eventname: "SEO and Content Marketing",
+                category: "Marketing",
+                durationhour: 7,
+              },
+              {
+                eventid: "EVT10019",
+                eventname: "Cryptocurrency Investment Strategies",
+                category: "Finance",
+                durationhour: 9,
+              },
+              {
+                eventid: "EVT10020",
+                eventname: "Social Media Marketing Trends",
+                category: "Marketing",
+                durationhour: 5,
+              },
+            ],
+
+            // Search filters
+            searchId: "",
+            searchName: "",
+            searchDuration: "",
+            selectedCategory: "All",
+
+            // Registration form
+            form: {
+              username: "",
+              password: "",
+              confirmPassword: "",
+              category: "Business", // Default category
+              selectedEvent: "",
+            },
+
+            showSummary: false,
+          };
+        },
+
+        computed: {
+          // Filter events based on search criteria
+          filteredEvents() {
+            return this.events.filter((event) => {
+              // Filter by Event ID
+              const matchesId =
+                !this.searchId ||
+                event.eventid
+                  .toLowerCase()
+                  .includes(this.searchId.toLowerCase());
+
+              // Filter by Event Name
+              const matchesName =
+                !this.searchName ||
+                event.eventname
+                  .toLowerCase()
+                  .includes(this.searchName.toLowerCase());
+
+              // Filter by Duration
+              const matchesDuration =
+                !this.searchDuration ||
+                event.durationhour.toString() === this.searchDuration;
+
+              // Filter by Category
+              const matchesCategory =
+                this.selectedCategory === "All" ||
+                event.category === this.selectedCategory;
+
+              return (
+                matchesId && matchesName && matchesDuration && matchesCategory
+              );
+            });
+          },
+
+          // Get events for the selected category in registration form
+          eventsByCategory() {
+            return this.events.filter(
+              (event) => event.category === this.form.category,
+            );
+          },
+        },
+
+        methods: {
+          handleSubmit() {
+            if (this.form.password === this.form.confirmPassword) {
+              this.showSummary = true;
+              // Scroll to summary
+              setTimeout(() => {
+                const summaryBox = document.querySelector(".summary-box");
+                if (summaryBox) {
+                  summaryBox.scrollIntoView({
+                    behavior: "smooth",
+                    block: "nearest",
+                  });
+                }
+              }, 100);
+            }
+          },
+        },
+
+        watch: {
+          // Reset selected event when category changes
+          "form.category"() {
+            this.form.selectedEvent = "";
+            this.showSummary = false;
+          },
+        },
+      }).mount("#app");
+    </script>
+  </body>
+</html>
