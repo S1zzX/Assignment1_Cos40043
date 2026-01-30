@@ -646,6 +646,7 @@
                 v-model="form.username"
                 required
                 placeholder="Enter your username"
+                :disabled="showSummary"
               />
             </div>
 
@@ -659,6 +660,7 @@
                 v-model="form.password"
                 required
                 placeholder="Enter your password"
+                :disabled="showSummary"
               />
             </div>
 
@@ -674,6 +676,7 @@
                 v-model="form.confirmPassword"
                 required
                 placeholder="Re-enter your password"
+                :disabled="showSummary"
               />
               <div
                 v-if="form.confirmPassword && form.password !== form.confirmPassword"
@@ -701,6 +704,7 @@
                     id="regTech"
                     value="Technology"
                     v-model="form.category"
+                    :disabled="showSummary"
                   />
                   <label class="form-check-label" for="regTech"
                     >Technology</label
@@ -714,6 +718,7 @@
                     id="regBusiness"
                     value="Business"
                     v-model="form.category"
+                    :disabled="showSummary"
                   />
                   <label class="form-check-label" for="regBusiness"
                     >Business</label
@@ -727,6 +732,7 @@
                     id="regMarketing"
                     value="Marketing"
                     v-model="form.category"
+                    :disabled="showSummary"
                   />
                   <label class="form-check-label" for="regMarketing"
                     >Marketing</label
@@ -740,6 +746,7 @@
                     id="regFinance"
                     value="Finance"
                     v-model="form.category"
+                    :disabled="showSummary"
                   />
                   <label class="form-check-label" for="regFinance"
                     >Finance</label
@@ -756,6 +763,7 @@
                 id="eventSelect"
                 v-model="form.selectedEvent"
                 required
+                :disabled="showSummary"
               >
                 <option value="">Choose an event...</option>
                 <option
@@ -772,9 +780,9 @@
             <button
               type="submit"
               class="btn btn-primary btn-lg w-100"
-              :disabled="form.password !== form.confirmPassword || !form.password"
+              :disabled="!showSummary && (form.password !== form.confirmPassword || !form.password)"
             >
-              Register
+              {{ showSummary ? 'Register New Person' : 'Register' }}
             </button>
           </form>
 
@@ -1087,6 +1095,18 @@
 
         methods: {
           handleSubmit() {
+            // If summary is already showing, reset form for new registration
+            if (this.showSummary) {
+              this.showSummary = false;
+              this.form.username = "";
+              this.form.password = "";
+              this.form.confirmPassword = "";
+              this.form.category = "Business";
+              this.form.selectedEvent = "";
+              return;
+            }
+
+            // Otherwise, show summary if passwords match
             if (this.form.password === this.form.confirmPassword) {
               this.showSummary = true;
               // Scroll to summary
