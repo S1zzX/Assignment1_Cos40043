@@ -806,7 +806,7 @@
               <!-- Summary Display -->
               <div
                 v-if="form.username || form.selectedEvent"
-                class="summary-box"
+                class="summary-box mb-4"
               >
                 <h5><strong>Registration Summary</strong></h5>
                 <p v-if="form.username">
@@ -1134,8 +1134,6 @@
               this.form.username &&
               this.form.selectedEvent
             ) {
-              // You can add registration logic here (e.g., send to server)
-
               // Reset form for new registration
               this.form.username = "";
               this.form.password = "";
